@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My chat</title>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+  <style> 
+
+  #messages {
+    border-radius: 15px 50px;
+    border: 1px solid black;
+    padding: 20px;
+    margin: 10px 0px 10px 0px;
+    height: 500px
+  }
+
+  #chat_input {
+    border: 1px solid black;
+    width: 95%;
+    margin: 5px 0px 5px 0px;
+  }
+  
+  </style>
+</head>
+<body>
+  <form id="chat_form">
+    <div id="messages">
+      <span id="status"></span>
+    </div>
+    <input type="text" id="chat_input">
+    <input type="submit" value="Send">
+  </form>
+
+  <script>
+    var socket = io.connect('http://localhost:8080');
+
+    socket.on('connect', function(data){
+      $('#status').html('Connected to chattr');
+      var name = prompt("What's your name?");
+      socket.emit('join', name);  
+    });
+
+    socket.on('messages', function(data){
+      var messages = $('#messages').html();
+      $('#messages').html(messages + '<p>' + data.toString() + '</p>');
+    });
+
+    $('#chat_form').submit(function(e){
+      var message = $('#chat_input').val();
+      socket.emit('messages', message);
+      $('#chat_input').val('');
+      return false;
+    });
+  </script>
+</body>
+</html>
