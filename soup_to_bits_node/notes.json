@@ -1,0 +1,3 @@
+- npm init - to create package.json
+- npm install $list_of_dependencies --save
+- start writing our app.js
