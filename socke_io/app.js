@@ -16,7 +16,7 @@ var storeMessage = function(name, data) {
 var reloadMessages = function(client) {
   redisClient.lrange('messages', 0, -1, function(error, messages){
     messages = messages.reverse();
-    messages.forEach( function(message){
+    messages.forEach(function(message){
       message = JSON.parse(message);
       client.emit('messages', message.name + ': ' + message.data);
     });  
